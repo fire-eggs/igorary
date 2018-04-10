@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Covalition.Igorary.Utils.Extensions
+﻿
+namespace Igorary.Utils.Utils.Extensions
 {
     public static class LongExtensions
     {
         public static string ToKB(this long bytes) {
-            string[] suffix = new string[] { "B", "kB", "MB", "GB", "TB" };
+            string[] suffix = { "B", "kB", "MB", "GB", "TB" };
             float byteNumber = bytes;
             for (int i = 0; i < suffix.Length; i++) {
                 if (byteNumber < 1000)
@@ -15,8 +12,7 @@ namespace Covalition.Igorary.Utils.Extensions
                         return string.Format("{0} {1}", byteNumber, suffix[i]);
                     else
                         return string.Format("{0:0.#0} {1}", byteNumber, suffix[i]);
-                else
-                    byteNumber /= 1024;
+                byteNumber /= 1024;
             }
             return string.Format("{0:N} {1}", byteNumber, suffix[suffix.Length - 1]);
         }
@@ -28,7 +24,7 @@ namespace Covalition.Igorary.Utils.Extensions
         }
 
         public static string ToKBAndB(this long bytes) {
-            string[] suffix = new string[] { "B", "kB", "MB", "GB", "TB" };
+            string[] suffix = { "B", "kB", "MB", "GB", "TB" };
             float byteNumber = bytes;
             for (int i = 0; i < suffix.Length; i++) {
                 if (byteNumber < 1000)
@@ -36,8 +32,7 @@ namespace Covalition.Igorary.Utils.Extensions
                         return string.Format("{0} {1}", byteNumber, suffix[i]);
                     else
                         return string.Format("{0:0.#0} {1} (bytes: {2:#,##0})", byteNumber, suffix[i], bytes);
-                else
-                    byteNumber /= 1024;
+                byteNumber /= 1024;
             }
             return string.Format("{0:N} {1} (bytes: {2:#,##0})", byteNumber, suffix[suffix.Length - 1], bytes);
         }

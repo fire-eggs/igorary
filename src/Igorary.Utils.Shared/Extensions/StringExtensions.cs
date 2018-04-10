@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Covalition.Igorary.Utils.Extensions
+﻿namespace Igorary.Utils.Utils.Extensions
 {
     public static class StringExtensions
     {

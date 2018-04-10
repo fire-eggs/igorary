@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using System.Windows.Forms;
 using System.Runtime.InteropServices;
 using System.Drawing;
@@ -253,8 +254,8 @@ namespace Igorary.Forms
             StringBuilder fileSystemName = new StringBuilder(256);
             /* long ret = */ GetVolumeInformation(drive, volLabel, volLabel.Capacity, ref serNum, ref maxCompLen, ref volFlags, fileSystemName, fileSystemName.Capacity);
 
-            string serialNumberAsString = serNum.ToString("X");
-            serialNumberAsString.PadLeft(8, '0');
+            string serialNumberAsString = serNum.ToString("X").PadLeft(8,'0');
+            //serialNumberAsString.PadLeft(8, '0');
             serialNumberAsString = serialNumberAsString.Substring(0, 4) + "-" + serialNumberAsString.Substring(4);
             return serialNumberAsString;
         }
@@ -291,6 +292,7 @@ namespace Igorary.Forms
             public uint puColumns;
         }
 
+        // TODO KBR wParam is mis-declared for 64-bit platform
         [DllImport("user32.dll", CharSet = CharSet.Unicode)]
         public extern static int SendMessage(IntPtr hWnd, UInt32 Msg, int wParam, ref LVITEM lvItem);
 
@@ -311,7 +313,42 @@ namespace Igorary.Forms
         public extern static int SetWindowTheme(IntPtr hWnd, string pszSubAppName, string pszSubIdList);
 
 
-        
+        #region Faster File Reader
+        [DllImport("kernel32.dll", CharSet = CharSet.Unicode, SetLastError = true)]
+        public static extern IntPtr FindFirstFileW(string lpFileName, out WIN32_FIND_DATAW lpFindFileData);
+
+        [DllImport("kernel32.dll", CharSet = CharSet.Unicode)]
+        public static extern bool FindNextFile(IntPtr hFindFile, out WIN32_FIND_DATAW lpFindFileData);
+
+        [DllImport("kernel32.dll")]
+        public static extern bool FindClose(IntPtr hFindFile);
+
+        [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
+        public struct WIN32_FIND_DATAW
+        {
+            public FileAttributes dwFileAttributes;
+            public System.Runtime.InteropServices.ComTypes.FILETIME ftCreationTime;
+            public System.Runtime.InteropServices.ComTypes.FILETIME ftLastAccessTime;
+            public System.Runtime.InteropServices.ComTypes.FILETIME ftLastWriteTime;
+            public int nFileSizeHigh;
+            public int nFileSizeLow;
+            public int dwReserved0;
+            public int dwReserved1;
+            [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 260)]
+            public string cFileName;
+            [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 14)]
+            public string cAlternateFileName;
+        }
+        #endregion
+
+        // For volume cluster size
+        [DllImport("kernel32.dll", SetLastError = true, CharSet = CharSet.Auto)]
+        public static extern bool GetDiskFreeSpace(string lpRootPathName,
+           out uint lpSectorsPerCluster,
+           out uint lpBytesPerSector,
+           out uint lpNumberOfFreeClusters,
+           out uint lpTotalNumberOfClusters);
+
     }
 
 }

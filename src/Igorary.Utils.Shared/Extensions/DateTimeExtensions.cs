@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Covalition.Igorary.Utils.Extensions
+namespace Igorary.Utils.Extensions
 {
     public static class DateTimeExtensions
     {
@@ -24,8 +24,11 @@ namespace Covalition.Igorary.Utils.Extensions
             return new DateTime(dateTime.Year, dateTime.Month, 1);
         }
 
-        public static string ToShortDateString(this DateTime? dateTime) {
-            return dateTime?.ToShortDateString() ?? string.Empty;
+        public static string ToShortDateString(this DateTime? dateTime)
+        {
+            if (dateTime == null)
+                return string.Empty;
+            return dateTime.ToShortDateString(); // ?? string.Empty;
         }
     }
 }
