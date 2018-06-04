@@ -4,7 +4,7 @@ namespace Igorary.Utils.Utils.Extensions
     public static class LongExtensions
     {
         public static string ToKB(this long bytes) {
-            string[] suffix = { "B", "kB", "MB", "GB", "TB" };
+            string[] suffix = { "B", "KB", "MB", "GB", "TB" };
             float byteNumber = bytes;
             for (int i = 0; i < suffix.Length; i++) {
                 if (byteNumber < 1000)
@@ -31,7 +31,7 @@ namespace Igorary.Utils.Utils.Extensions
 
             // KBR TODO does this need to be fixed to round-down, see ToKB above?
 
-            string[] suffix = { "B", "kB", "MB", "GB", "TB" };
+            string[] suffix = { "B", "KB", "MB", "GB", "TB" };
             float byteNumber = bytes;
             for (int i = 0; i < suffix.Length; i++) {
                 if (byteNumber < 1000)
